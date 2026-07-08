@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       React.createElement(MenuDocument, { plan, recipes, shoppingList }) as React.ReactElement<DocumentProps>
     )
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': 'attachment; filename="FastMenu.pdf"',
