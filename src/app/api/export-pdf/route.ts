@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { renderToBuffer } from '@react-pdf/renderer'
+import type { DocumentProps } from '@react-pdf/renderer'
 import React from 'react'
 import { MenuDocument } from '@/components/pdf/MenuDocument'
 import type { WeeklyPlan, Recipe, ShoppingListItem } from '@/types'
@@ -12,8 +13,10 @@ export async function POST(req: NextRequest) {
       shoppingList: ShoppingListItem[]
     }
 
+    // MenuDocument devuelve <Document>, pero TS no puede inferirlo a través
+    // de createElement — renderToBuffer exige ReactElement<DocumentProps>.
     const buffer = await renderToBuffer(
-      React.createElement(MenuDocument, { plan, recipes, shoppingList })
+      React.createElement(MenuDocument, { plan, recipes, shoppingList }) as React.ReactElement<DocumentProps>
     )
 
     return new NextResponse(buffer, {
